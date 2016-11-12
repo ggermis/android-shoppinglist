@@ -2,6 +2,7 @@ package org.codenut.labs.shoppinglist.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ShoppingList {
         for (ShoppingListItem item : list) {
             builder.append(item.asString()).append("\n");
         }
-        return builder.toString().getBytes();
+        return builder.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     public InputStream asInputStream() {

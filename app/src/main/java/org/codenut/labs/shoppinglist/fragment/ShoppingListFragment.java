@@ -95,7 +95,7 @@ public class ShoppingListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shopping_list, container, false);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -122,6 +122,8 @@ public class ShoppingListFragment extends Fragment {
                         intent.setClassName(getContext(), "org.codenut.labs.shoppinglist.SettingsActivity");
                         startActivity(intent);
                         break;
+                    default:
+                        return false;
                 }
                 return true;
             }

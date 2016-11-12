@@ -8,6 +8,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +23,7 @@ import java.util.regex.Pattern;
 public class ShoppingListParser {
     public ShoppingList parse(InputStream in) {
         ShoppingList shoppingList = new ShoppingList();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         Pattern p = Pattern.compile("(\\d+) ([^(]+)\\(([^)]+)\\)");
         try {
             String line;

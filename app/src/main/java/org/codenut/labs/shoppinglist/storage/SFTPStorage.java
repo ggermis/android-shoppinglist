@@ -21,7 +21,6 @@ import java.io.InputStream;
 
 class SFTPStorage implements Storage {
 
-    private String protocol;
     private String host;
     private String port;
     private String username;
@@ -30,7 +29,6 @@ class SFTPStorage implements Storage {
 
 
     SFTPStorage(final SharedPreferences settings) {
-        this.protocol = settings.getString(SettingsFragment.PREF_PROTOCOL, "");
         this.host = settings.getString(SettingsFragment.PREF_HOST, "");
         this.port = settings.getString(SettingsFragment.PREF_PORT, "");
         this.username = settings.getString(SettingsFragment.PREF_USER, "");

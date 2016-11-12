@@ -15,7 +15,6 @@ class FTPStorage implements Storage {
 
     private FTPClient ftp = new FTPClient();
 
-    private String protocol;
     private String host;
     private String port;
     private String username;
@@ -24,7 +23,6 @@ class FTPStorage implements Storage {
 
 
     FTPStorage(final SharedPreferences settings) {
-        this.protocol = settings.getString(SettingsFragment.PREF_PROTOCOL, "");
         this.host = settings.getString(SettingsFragment.PREF_HOST, "");
         this.port = settings.getString(SettingsFragment.PREF_PORT, "");
         this.username = settings.getString(SettingsFragment.PREF_USER, "");
