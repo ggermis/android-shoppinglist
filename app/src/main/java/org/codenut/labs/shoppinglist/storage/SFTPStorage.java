@@ -76,10 +76,12 @@ class SFTPStorage implements Storage {
             session = ssh.getSession(username, host, Integer.parseInt(port));
             session.setPassword(password);
             session.connect(5000);
-            channel = session.openChannel("sftp");
-            channel.connect(5000);
-            ChannelSftp sftp = (ChannelSftp) channel;
-            sftp.put(shoppingList.asInputStream(), filename);
+            if (session.isConnected()) {
+                channel = session.openChannel("sftp");
+                channel.connect(5000);
+                ChannelSftp sftp = (ChannelSftp) channel;
+                sftp.put(shoppingList.asInputStream(), filename);
+            }
         } catch(JSchException | SftpException e) {
             Log.e("exception", e.getMessage());
         } finally {
