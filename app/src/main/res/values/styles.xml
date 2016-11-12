@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+    <style name="ToolBarStyle">
+        <item name="android:background">#fff3f3f3</item>
+    </style>
+</resources>

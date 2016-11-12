@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/miSave"
+            android:icon="@android:drawable/ic_menu_save"
+            app:showAsAction="ifRoom"
+            android:title="Save">
+    </item>
+    <item
+            android:id="@+id/miOpen"
+            android:icon="@drawable/ic_menu_archive"
+            app:showAsAction="ifRoom"
+            android:title="Open">
+    </item>
+    <item
+        android:id="@+id/empty"
+        android:title="overflow"
+        android:icon="@drawable/ic_menu_moreoverflow"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/miPreferences"
+                android:icon="@android:drawable/ic_menu_preferences"
+                app:showAsAction="ifRoom"
+                android:title="Settings">
+            </item>
+            <item
+                android:id="@+id/miLoadTestData"
+                android:icon="@drawable/ic_menu_revert"
+                app:showAsAction="ifRoom"
+                android:title="Resetting Test Data">
+            </item>
+        </menu>
+    </item>
+</menu>

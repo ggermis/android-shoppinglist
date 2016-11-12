@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="PREF_AUTO_LOAD"
+        android:title="@string/pref_key_auto_load_file"
+        android:summary="@string/pref_key_auto_load_file_summary"/>
+
+    <EditTextPreference
+        android:key="PREF_FONT_SIZE"
+        android:title="@string/pref_key_font_size"
+        android:dialogTitle="@string/pref_key_font_size"
+        android:numeric="decimal"
+        android:defaultValue="24"/>
+
+    <PreferenceCategory
+            android:title="@string/pref_key_storage_settings"
+            android:key="pref_key_storage_settings">
+
+        <ListPreference
+            android:key="PREF_PROTOCOL"
+            android:title="@string/pref_key_protocol"
+            android:entries="@array/protocols"
+            android:entryValues="@array/protocols"/>
+
+        <EditTextPreference
+            android:key="PREF_HOST"
+            android:title="@string/pref_key_host"
+            android:dialogTitle="Host"/>
+
+        <EditTextPreference
+                android:key="PREF_PORT"
+                android:numeric="integer"
+                android:title="@string/pref_key_port"
+                android:dialogTitle="@string/pref_key_port"/>
+
+        <EditTextPreference
+                android:key="PREF_USER"
+                android:title="@string/pref_key_username"
+                android:dialogTitle="@string/pref_key_username"/>
+
+        <EditTextPreference
+                android:key="PREF_PASSWORD"
+                android:password="true"
+                android:title="@string/pref_key_password"
+                android:dialogTitle="@string/pref_key_password"/>
+
+        <EditTextPreference
+                android:key="PREF_FILE"
+                android:title="@string/pref_key_file"
+                android:dialogTitle="@string/pref_key_file"/>
+    </PreferenceCategory>
+</PreferenceScreen>

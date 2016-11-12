@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ShoppingList</string>
+    <string name="shopping_list_title">Winkellijstje</string>
+
+    <!-- Shared preferences -->
+    <string name="pref_key_auto_load_file">Load file on startup</string>
+    <string name="pref_key_auto_load_file_summary">Automatically load file content on startup</string>
+    <string name="pref_key_pattern">Pattern</string>
+    <string name="pref_key_font_size">Font Size</string>
+    <string name="pref_key_storage_settings">Storage settings</string>
+    <string name="pref_key_protocol">Protocol</string>
+    <string name="pref_key_host">Hostname</string>
+    <string name="pref_key_port">Port</string>
+    <string name="pref_key_username">Username</string>
+    <string name="pref_key_password">Password</string>
+    <string name="pref_key_file">File</string>
+
+    <string-array name="protocols">
+        <item>FTP</item>
+        <item>SFTP</item>
+    </string-array>
+</resources>
