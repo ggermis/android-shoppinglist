@@ -46,9 +46,7 @@ public class ShoppingListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ShoppingList shoppingList) {
-            if (!shoppingList.isEmpty()) {
-                adapter.setShoppingList(shoppingList);
-            } else {
+            if (! adapter.setShoppingList(shoppingList)) {
                 Toast.makeText(getContext(), "Unable to download from " + storage + ". Check network", Toast.LENGTH_SHORT).show();
             }
             super.onPostExecute(shoppingList);

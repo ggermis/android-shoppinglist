@@ -33,11 +33,15 @@ public class ShoppingListAdapter extends ArrayAdapter<ShoppingListItem> {
         return shoppingList;
     }
 
-    public void setShoppingList(ShoppingList shoppingList) {
+    public boolean setShoppingList(ShoppingList shoppingList) {
+        if (shoppingList.isEmpty()) {
+            return false;
+        }
         this.shoppingList = shoppingList;
         clear();
         addAll(shoppingList.getList());
         notifyDataSetChanged();
+        return true;
     }
 
     @Override
