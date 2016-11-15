@@ -65,9 +65,10 @@ public class ShoppingListAdapter extends ArrayAdapter<ShoppingListItem> {
         if (item != null) {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-            final String fontSize = settings.getString(SettingsFragment.PREF_FONT_SIZE, "24");
-            viewHolderItem.itemName.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.valueOf(fontSize));
-            viewHolderItem.itemCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.valueOf(fontSize));
+            final String fontSizeValue = settings.getString(SettingsFragment.PREF_FONT_SIZE, "");
+            final Float fontSize = fontSizeValue.isEmpty() ? Float.valueOf("24") : Float.valueOf(fontSizeValue);
+            viewHolderItem.itemName.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+            viewHolderItem.itemCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
 
             viewHolderItem.itemName.setText(item.getName());
             viewHolderItem.itemCount.setText(String.valueOf(item.getCount()));

@@ -3,6 +3,7 @@ package org.codenut.labs.shoppinglist.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 
@@ -55,8 +56,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
 
     private void setSummaryValueFor(final String key) {
+        Preference preference = findPreference(key);
         final String value = getValueOrDefault(settings.getString(key, ""), "<empty>", key.equals(PREF_PASS));
-        findPreference(key).setSummary(value);
+        preference.setSummary(value);
     }
 
 

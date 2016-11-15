@@ -150,7 +150,7 @@ public class ShoppingListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    
+
     private void doLoadData() {
         Storage storage = StorageFactory.create(settings);
         Toast.makeText(getContext(), "Loading from " + storage, Toast.LENGTH_SHORT).show();
