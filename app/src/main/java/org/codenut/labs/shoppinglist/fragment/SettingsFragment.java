@@ -3,14 +3,18 @@ package org.codenut.labs.shoppinglist.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+
 import org.codenut.labs.shoppinglist.R;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private SharedPreferences settings;
 
     public static final String PREF_FONT_SIZE = "PREF_FONT_SIZE";
     public static final String PREF_PROTOCOL = "PREF_PROTOCOL";
@@ -21,28 +25,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public static final String PREF_FILE = "PREF_FILE";
     public static final String PREF_AUTO_LOAD = "PREF_AUTO_LOAD";
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
-
-        // Show values in summary
-        SharedPreferences settings = getPreferenceScreen().getSharedPreferences();
-        ListPreference prefProtocol = (ListPreference) findPreference(PREF_PROTOCOL);
-        prefProtocol.setSummary(settings.getString(PREF_PROTOCOL, "No protocol specified"));
-        EditTextPreference prefHost = (EditTextPreference) findPreference(PREF_HOST);
-        prefHost.setSummary(settings.getString(PREF_HOST, "No host specified"));
-        EditTextPreference prefPort = (EditTextPreference) findPreference(PREF_PORT);
-        prefPort.setSummary(settings.getString(PREF_PORT, "No port specified"));
-        EditTextPreference prefUser = (EditTextPreference) findPreference(PREF_USER);
-        prefUser.setSummary(settings.getString(PREF_USER, "No username specified"));
-        EditTextPreference prefPassword = (EditTextPreference) findPreference(PREF_PASS);
-        final String password = settings.getString(PREF_PASS, "");
-        prefPassword.setSummary(password.isEmpty() ? "No password specified" : "****");
-        EditTextPreference prefFile = (EditTextPreference) findPreference(PREF_FILE);
-        prefFile.setSummary(settings.getString(PREF_FILE, "No file specified"));
-        EditTextPreference prefFontSize = (EditTextPreference) findPreference(PREF_FONT_SIZE);
-        prefFontSize.setSummary(settings.getString(PREF_FONT_SIZE, "No font size specified"));
+        this.settings = getPreferenceScreen().getSharedPreferences();
+        setSummaryValues();
     }
 
     @Override
@@ -72,6 +61,32 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             } else {
                 pref.setSummary(etp.getText());
             }
+        }
+    }
+
+
+    private void setSummaryValues() {
+        setSummaryValueFor(PREF_PROTOCOL, "No protocol specified");
+        setSummaryValueFor(PREF_HOST, "No host specified");
+        setSummaryValueFor(PREF_PORT, "No port specified");
+        setSummaryValueFor(PREF_USER, "No username specified");
+        setSummaryValueFor(PREF_FILE, "No file specified");
+        setSummaryValueFor(PREF_FONT_SIZE, "No font size specified");
+
+        EditTextPreference prefPassword = (EditTextPreference) findPreference(PREF_PASS);
+        final String password = settings.getString(PREF_PASS, "");
+        prefPassword.setSummary(password.isEmpty() ? "No password specified" : "****");
+    }
+
+    private void setSummaryValueFor(final String key, final String defaultText) {
+        Preference pref = findPreference(key);
+        if (pref instanceof EditTextPreference) {
+            EditTextPreference preference = (EditTextPreference) findPreference(key);
+            preference.setSummary(settings.getString(key, defaultText));
+        }
+        if (pref instanceof  ListPreference) {
+            ListPreference preference = (ListPreference) findPreference(key);
+            preference.setSummary(settings.getString(key, defaultText));
         }
     }
 }
