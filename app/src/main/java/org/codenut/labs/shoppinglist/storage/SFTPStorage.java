@@ -43,7 +43,7 @@ class SFTPStorage implements Storage {
         try {
             JSch ssh = new JSch();
             JSch.setConfig("StrictHostKeyChecking", "no");
-            session = ssh.getSession(username, host, Integer.parseInt(port));
+            session = ssh.getSession(username, host, Integer.parseInt(port.isEmpty() ? "22" : port));
             session.setPassword(password);
             session.connect(5000);
             if (session.isConnected()) {

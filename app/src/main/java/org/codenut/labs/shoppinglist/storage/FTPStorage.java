@@ -34,7 +34,7 @@ class FTPStorage implements Storage {
     public ShoppingList load() {
         ShoppingList shoppingList = new ShoppingList();
         try {
-            ftp.connect(host, Integer.parseInt(port));
+            ftp.connect(host, Integer.parseInt(port.isEmpty() ? "21" : port));
             if (ftp.login(username, password)) {
                 InputStream in = ftp.retrieveFileStream(filename);
                 shoppingList = new ShoppingListParser().parse(in);

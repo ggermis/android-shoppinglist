@@ -3,7 +3,6 @@ package org.codenut.labs.shoppinglist.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -31,7 +30,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
         this.settings = getPreferenceScreen().getSharedPreferences();
-        setSummaryValues();
+        setSummaryValueFor(PREF_PROTOCOL);
+        setSummaryValueFor(PREF_HOST);
+        setSummaryValueFor(PREF_PORT);
+        setSummaryValueFor(PREF_USER);
+        setSummaryValueFor(PREF_FILE);
+        setSummaryValueFor(PREF_FONT_SIZE);
+        setSummaryValueFor(PREF_PASS);
     }
 
     @Override
@@ -48,45 +53,21 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Preference pref = findPreference(key);
-        if (pref instanceof ListPreference) {
-            ListPreference lp = (ListPreference) pref;
-            pref.setSummary(lp.getValue());
-        }
-        if (pref instanceof EditTextPreference) {
-            EditTextPreference etp = (EditTextPreference) pref;
-            if (key.equals(PREF_PASS)) {
-                final String password = etp.getText();
-                pref.setSummary(password.isEmpty() ? "No password specified" : "****");
-            } else {
-                pref.setSummary(etp.getText());
-            }
-        }
+        setSummaryValueFor(key);
     }
 
 
-    private void setSummaryValues() {
-        setSummaryValueFor(PREF_PROTOCOL, "No protocol specified");
-        setSummaryValueFor(PREF_HOST, "No host specified");
-        setSummaryValueFor(PREF_PORT, "No port specified");
-        setSummaryValueFor(PREF_USER, "No username specified");
-        setSummaryValueFor(PREF_FILE, "No file specified");
-        setSummaryValueFor(PREF_FONT_SIZE, "No font size specified");
-
-        EditTextPreference prefPassword = (EditTextPreference) findPreference(PREF_PASS);
-        final String password = settings.getString(PREF_PASS, "");
-        prefPassword.setSummary(password.isEmpty() ? "No password specified" : "****");
+    private void setSummaryValueFor(final String key) {
+        final String value = getValueOrDefault(settings.getString(key, ""), "<empty>", key.equals(PREF_PASS));
+        findPreference(key).setSummary(value);
     }
 
-    private void setSummaryValueFor(final String key, final String defaultText) {
-        Preference pref = findPreference(key);
-        if (pref instanceof EditTextPreference) {
-            EditTextPreference preference = (EditTextPreference) findPreference(key);
-            preference.setSummary(settings.getString(key, defaultText));
-        }
-        if (pref instanceof  ListPreference) {
-            ListPreference preference = (ListPreference) findPreference(key);
-            preference.setSummary(settings.getString(key, defaultText));
-        }
+
+    private String getValueOrDefault(String value, String defaultValue, boolean obfuscated) {
+        return value.isEmpty() ? defaultValue : obfuscated ? convertToStars(value) : value;
+    }
+
+    private String convertToStars(String value) {
+        return value.replaceAll(".", "*");
     }
 }
