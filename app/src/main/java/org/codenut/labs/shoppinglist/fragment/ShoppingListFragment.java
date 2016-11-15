@@ -107,19 +107,15 @@ public class ShoppingListFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Storage storage = StorageFactory.create(settings);
                 switch(item.getItemId()) {
                     case R.id.miOpen:
-                        Toast.makeText(getContext(), "Loading from " + storage, Toast.LENGTH_SHORT).show();
-                        new FileLoadTask(storage).execute();
+                        doLoadData();
                         break;
                     case R.id.miSave:
-                        Toast.makeText(getContext(), "Saving to " + storage, Toast.LENGTH_SHORT).show();
-                        new FileSaveTask(storage).execute();
+                        doSaveData();
                         break;
                     case R.id.miLoadTestData:
-                        Toast.makeText(getContext(), "Reloading test data", Toast.LENGTH_SHORT).show();
-                        adapter.setShoppingList(new StubShoppingListLoader().load());
+                        doResetData();
                         break;
                     case R.id.miPreferences:
                         Intent intent = new Intent();
@@ -137,9 +133,7 @@ public class ShoppingListFragment extends Fragment {
         adapter = new ShoppingListAdapter(getActivity(), new ShoppingList());
 
         if (settings.getBoolean(SettingsFragment.PREF_AUTO_LOAD, false)) {
-            Storage storage = StorageFactory.create(settings);
-            Toast.makeText(getContext(), "Loading from " + storage, Toast.LENGTH_SHORT).show();
-            new FileLoadTask(storage).execute();
+            doLoadData();
         }
         return view;
     }
@@ -154,5 +148,24 @@ public class ShoppingListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.configuration_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    
+    private void doLoadData() {
+        Storage storage = StorageFactory.create(settings);
+        Toast.makeText(getContext(), "Loading from " + storage, Toast.LENGTH_SHORT).show();
+        new FileLoadTask(storage).execute();
+    }
+
+    private void doSaveData() {
+        Storage storage = StorageFactory.create(settings);
+        Toast.makeText(getContext(), "Saving to " + storage, Toast.LENGTH_SHORT).show();
+        new FileSaveTask(storage).execute();
+    }
+
+    private void doResetData() {
+        Storage storage = StorageFactory.create(settings);
+        Toast.makeText(getContext(), "Reloading test data", Toast.LENGTH_SHORT).show();
+        adapter.setShoppingList(new StubShoppingListLoader().load());
     }
 }
