@@ -1,6 +1,7 @@
 package org.codenut.labs.shoppinglist.data;
 
 import android.util.Log;
+
 import org.codenut.labs.shoppinglist.model.ShoppingList;
 import org.codenut.labs.shoppinglist.model.ShoppingListItem;
 
@@ -8,8 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

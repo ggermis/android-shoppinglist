@@ -4,6 +4,7 @@ package org.codenut.labs.shoppinglist;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
 import org.codenut.labs.shoppinglist.fragment.SettingsFragment;
 
 

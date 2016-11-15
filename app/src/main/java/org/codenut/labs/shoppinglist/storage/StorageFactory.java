@@ -1,6 +1,7 @@
 package org.codenut.labs.shoppinglist.storage;
 
 import android.content.SharedPreferences;
+
 import org.codenut.labs.shoppinglist.fragment.SettingsFragment;
 
 
