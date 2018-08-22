@@ -21,10 +21,11 @@ import java.util.regex.Pattern;
  */
 public class ShoppingListParser {
     public ShoppingList parse(InputStream in) {
+        BufferedReader reader = null;
         ShoppingList shoppingList = new ShoppingList();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        Pattern p = Pattern.compile("(\\d+) ([^(]+)\\(([^)]+)\\)");
         try {
+            reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            Pattern p = Pattern.compile("(\\d+) ([^(]+)\\(([^)]+)\\)");
             String line;
             while ((line = reader.readLine()) != null) {
                 Matcher m = p.matcher(line.trim());
@@ -39,7 +40,9 @@ public class ShoppingListParser {
             Log.e("exception", e.getMessage());
         } finally {
             try {
-                reader.close();
+                if (reader != null) {
+                    reader.close();
+                }
             } catch (IOException e) {
                 Log.e("exception", e.getMessage());
             }

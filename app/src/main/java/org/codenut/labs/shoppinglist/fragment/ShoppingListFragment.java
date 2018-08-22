@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -52,9 +53,13 @@ public class ShoppingListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ShoppingList shoppingList) {
-            if (! adapter.setShoppingList(shoppingList)) {
-                Toast.makeText(getContext(), "Unable to download from " + storage + ". Check network", Toast.LENGTH_SHORT).show();
+            if (storage.getMessage() != null) {
+                Toast.makeText(getContext(), "ERROR: " + storage.getMessage(), Toast.LENGTH_SHORT).show();
             }
+            if (shoppingList.isEmpty()) {
+                Toast.makeText(getContext(), "Empty shopping list loaded. Check settings and remote file content.", Toast.LENGTH_SHORT).show();
+            }
+            adapter.setShoppingList(shoppingList);
             super.onPostExecute(shoppingList);
         }
     }
@@ -99,9 +104,9 @@ public class ShoppingListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shopping_list, container, false);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -114,9 +119,9 @@ public class ShoppingListFragment extends Fragment {
                     case R.id.miSave:
                         doSaveData();
                         break;
-                    case R.id.miLoadTestData:
-                        doResetData();
-                        break;
+//                    case R.id.miLoadTestData:
+//                        doResetData();
+//                        break;
                     case R.id.miPreferences:
                         Intent intent = new Intent();
                         intent.setClassName(getContext(), "org.codenut.labs.shoppinglist.SettingsActivity");
@@ -129,7 +134,7 @@ public class ShoppingListFragment extends Fragment {
             }
         });
         settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-        shoppingList = (ListView)view.findViewById(R.id.shoppingList);
+        shoppingList = view.findViewById(R.id.shoppingList);
         adapter = new ShoppingListAdapter(getActivity(), new ShoppingList());
 
         if (settings.getBoolean(SettingsFragment.PREF_AUTO_LOAD, false)) {
@@ -163,9 +168,9 @@ public class ShoppingListFragment extends Fragment {
         new FileSaveTask(storage).execute();
     }
 
-    private void doResetData() {
-        Storage storage = StorageFactory.create(settings);
-        Toast.makeText(getContext(), "Reloading test data", Toast.LENGTH_SHORT).show();
-        adapter.setShoppingList(new StubShoppingListLoader().load());
-    }
+//    private void doResetData() {
+//        Storage storage = StorageFactory.create(settings);
+//        Toast.makeText(getContext(), "Reloading test data", Toast.LENGTH_SHORT).show();
+//        adapter.setShoppingList(new StubShoppingListLoader().load());
+//    }
 }

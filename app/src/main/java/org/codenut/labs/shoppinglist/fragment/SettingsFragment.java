@@ -20,7 +20,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public static final String PREF_USER = "PREF_USER";
     public static final String PREF_PASS = "PREF_PASSWORD";
     public static final String PREF_FILE = "PREF_FILE";
-    public static final String PREF_AUTO_LOAD = "PREF_AUTO_LOAD";
+    static final String PREF_AUTO_LOAD = "PREF_AUTO_LOAD";
 
 
     @Override
@@ -28,13 +28,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
         this.settings = getPreferenceScreen().getSharedPreferences();
-        setSummaryValueFor(PREF_PROTOCOL);
-        setSummaryValueFor(PREF_HOST);
-        setSummaryValueFor(PREF_PORT);
-        setSummaryValueFor(PREF_USER);
-        setSummaryValueFor(PREF_FILE);
-        setSummaryValueFor(PREF_FONT_SIZE);
-        setSummaryValueFor(PREF_PASS);
+        setSummaryValueFor(PREF_PROTOCOL, settings.getString(PREF_PROTOCOL,""));
+        setSummaryValueFor(PREF_HOST, settings.getString(PREF_HOST, ""));
+        setSummaryValueFor(PREF_PORT, settings.getString(PREF_PORT, "0"));
+        setSummaryValueFor(PREF_USER, settings.getString(PREF_USER, ""));
+        setSummaryValueFor(PREF_FILE, settings.getString(PREF_FILE, ""));
+        setSummaryValueFor(PREF_FONT_SIZE, settings.getString(PREF_FONT_SIZE, "18"));
+        setSummaryValueFor(PREF_PASS, settings.getString(PREF_PASS, ""));
     }
 
     @Override
@@ -51,22 +51,26 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        setSummaryValueFor(key);
+        if (PREF_AUTO_LOAD.equals(key)) {
+            setSummaryValueFor(key, settings.getBoolean(key, Boolean.FALSE));
+        } else {
+            setSummaryValueFor(key, settings.getString(key, ""));
+        }
     }
 
 
-    private void setSummaryValueFor(final String key) {
+    private <T> void setSummaryValueFor(final String key, final T currentValue) {
         Preference preference = findPreference(key);
-        final String value = getValueOrDefault(settings.getString(key, ""), "<empty>", key.equals(PREF_PASS));
-        preference.setSummary(value);
+        final String summary = getValueOrDefault(currentValue.toString(), key.equals(PREF_PASS) );
+        preference.setSummary(summary);
     }
 
 
-    private String getValueOrDefault(String value, String defaultValue, boolean obfuscated) {
-        return value.isEmpty() ? defaultValue : obfuscated ? convertToStars(value) : value;
-    }
-
-    private String convertToStars(String value) {
-        return value.replaceAll(".", "*");
+    private String getValueOrDefault(String value, boolean obfuscated) {
+        if (value.isEmpty()) {
+            return "<empty>";
+        } else {
+            return obfuscated ? "*****" : value;
+        }
     }
 }

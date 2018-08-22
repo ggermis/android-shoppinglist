@@ -25,7 +25,7 @@ public class ShoppingList {
         return list.isEmpty();
     }
 
-    public byte[] asByteArray() {
+    private byte[] asByteArray() {
         StringBuilder builder = new StringBuilder();
         for (ShoppingListItem item : list) {
             builder.append(item.asString()).append("\n");

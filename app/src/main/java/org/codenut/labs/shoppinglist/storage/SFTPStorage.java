@@ -26,7 +26,7 @@ class SFTPStorage implements Storage {
     private String username;
     private String password;
     private String filename;
-
+    private String message;
 
     SFTPStorage(final SharedPreferences settings) {
         this.host = settings.getString(SettingsFragment.PREF_HOST, "");
@@ -37,6 +37,7 @@ class SFTPStorage implements Storage {
     }
 
     public ShoppingList load() {
+        clearMessage();
         ShoppingList shoppingList = new ShoppingList();
         Session session = null;
         Channel channel = null;
@@ -51,10 +52,15 @@ class SFTPStorage implements Storage {
                 channel.connect(5000);
                 ChannelSftp sftp = (ChannelSftp) channel;
                 InputStream in = sftp.get(filename);
+                if (in == null) {
+                    this.message = "Unable to read file " + filename;
+                    return shoppingList;
+                }
                 shoppingList = new ShoppingListParser().parse(in);
                 in.close();
             }
         } catch(JSchException | IOException | SftpException e) {
+            this.message = e.getMessage();
             Log.e("exception", e.getMessage());
         } finally {
             if (channel != null) {
@@ -68,6 +74,7 @@ class SFTPStorage implements Storage {
     }
 
     public ShoppingList save(final ShoppingList shoppingList) {
+        clearMessage();
         Session session = null;
         Channel channel = null;
         try {
@@ -83,6 +90,7 @@ class SFTPStorage implements Storage {
                 sftp.put(shoppingList.asInputStream(), filename);
             }
         } catch(JSchException | SftpException e) {
+            this.message = e.getMessage();
             Log.e("exception", e.getMessage());
         } finally {
             if (channel != null) {
@@ -94,6 +102,15 @@ class SFTPStorage implements Storage {
         }
         return shoppingList;
     }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    private void clearMessage() {
+        this.message = null;
+    }
+
 
     @Override
     public String toString() {

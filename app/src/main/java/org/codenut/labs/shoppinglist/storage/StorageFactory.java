@@ -6,6 +6,8 @@ import org.codenut.labs.shoppinglist.fragment.SettingsFragment;
 
 
 public class StorageFactory {
+    private StorageFactory() {}
+
     public static Storage create(final SharedPreferences settings) {
         String protocol = settings.getString(SettingsFragment.PREF_PROTOCOL, "");
         switch (protocol) {
@@ -14,8 +16,8 @@ public class StorageFactory {
             case "SFTP":
                 return new SFTPStorage(settings);
             default:
-                // not implemented yet
-                return null;
+                // do not return null
+                return new EmptyStorage();
         }
     }
 }

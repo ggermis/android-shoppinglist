@@ -3,6 +3,8 @@ package org.codenut.labs.shoppinglist.adapter;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,27 +36,24 @@ public class ShoppingListAdapter extends ArrayAdapter<ShoppingListItem> {
         return shoppingList;
     }
 
-    public boolean setShoppingList(ShoppingList shoppingList) {
-        if (shoppingList.isEmpty()) {
-            return false;
-        }
-        this.shoppingList = shoppingList;
+    public void setShoppingList(ShoppingList shoppingList) {
         clear();
+        this.shoppingList = shoppingList;
         addAll(shoppingList.getList());
         notifyDataSetChanged();
-        return true;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolderItem viewHolderItem;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.shopping_list_item, parent, false);
 
             viewHolderItem = new ViewHolderItem();
-            viewHolderItem.itemName = (TextView) convertView.findViewById(R.id.item_name);
-            viewHolderItem.itemCount = (TextView) convertView.findViewById(R.id.item_count);
+            viewHolderItem.itemName = convertView.findViewById(R.id.item_name);
+            viewHolderItem.itemCount = convertView.findViewById(R.id.item_count);
 
             convertView.setTag(viewHolderItem);
         } else {

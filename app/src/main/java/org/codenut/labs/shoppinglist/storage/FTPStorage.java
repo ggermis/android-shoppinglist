@@ -20,7 +20,7 @@ class FTPStorage implements Storage {
     private String username;
     private String password;
     private String filename;
-
+    private String message;
 
     FTPStorage(final SharedPreferences settings) {
         this.host = settings.getString(SettingsFragment.PREF_HOST, "");
@@ -32,17 +32,23 @@ class FTPStorage implements Storage {
 
 
     public ShoppingList load() {
+        clearMessage();
         ShoppingList shoppingList = new ShoppingList();
         try {
             ftp.connect(host, Integer.parseInt(port.isEmpty() ? "21" : port));
             if (ftp.login(username, password)) {
                 InputStream in = ftp.retrieveFileStream(filename);
+                if (in == null) {
+                    this.message = "Unable to read file " + filename;
+                    return shoppingList;
+                }
                 shoppingList = new ShoppingListParser().parse(in);
                 in.close();
                 ftp.logout();
             }
             ftp.disconnect();
         } catch (IOException e) {
+            this.message = e.getMessage();
             Log.d("exception", e.getMessage());
         }
         return shoppingList;
@@ -50,6 +56,7 @@ class FTPStorage implements Storage {
 
 
     public ShoppingList save(final ShoppingList shoppingList) {
+        clearMessage();
         try {
             ftp.connect(host);
             if (ftp.login(username, password)) {
@@ -61,9 +68,18 @@ class FTPStorage implements Storage {
             }
             ftp.disconnect();
         } catch (IOException e) {
+            this.message = e.getMessage();
             Log.d("exception", e.getMessage());
         }
         return shoppingList;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    private void clearMessage() {
+        this.message = null;
     }
 
     @Override
